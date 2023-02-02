@@ -16,7 +16,7 @@ jobs:
       matrix:
         build: [release]
         arch: [armv7]
-        thing: [arrowfunk]
+        thing: [alice]
 
     steps:
       - name: Checkout
@@ -57,6 +57,7 @@ jobs:
           haxelib --quiet install flixel-addons 2.11.0
           haxelib --quiet git linc_luajit https://github.com/Sirox228/linc_luajit.git
           haxelib --quiet git extension-androidtools https://github.com/majigsaw77/extension-androidtools.git
+          haxelib install actuate 
           haxelib list
 
       - name: Configure Android
