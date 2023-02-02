@@ -58,6 +58,7 @@ jobs:
           haxelib --quiet git linc_luajit https://github.com/Sirox228/linc_luajit.git
           haxelib --quiet git extension-androidtools https://github.com/majigsaw77/extension-androidtools.git
           haxelib install actuate 
+          haxelib git extension-webview https://github.com/Daninnocent/extension-webview
           haxelib list
 
       - name: Configure Android
