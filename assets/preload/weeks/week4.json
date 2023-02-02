@@ -1,0 +1,20 @@
+{
+	"songs": [
+		["Golden", "pinkeline", [255, 111, 170]]
+	],
+
+	"weekCharacters": [
+		"",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "stage",
+
+	"storyName": "",
+	"weekBefore": "week1",
+	"weekName": "Madeline",
+	"startUnlocked": true,
+
+	"hideStoryMode": false,
+	"hideFreeplay": false
+}
