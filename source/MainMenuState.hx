@@ -30,9 +30,9 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
-	
-	var optionShit:Array<String> = ['story_mode', 'freeplay', #if ACHIEVEMENTS_ALLOWED 'awards', #end 'credits', #if !switch 'donate', #end 'options'];
+	var optionShit:Array<String> = ['story_mode', 'freeplay', 'credits', 'options'];
 
+        var menushit:FlxSprite;
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
@@ -66,6 +66,24 @@ class MainMenuState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
 
+                var menushit:FlxSprite = new FlxSprite();
+                menushit.frames = Paths.getSparrowAtlas('mainmenu/FNF_main_menu_assets);
+                menushit.animation.addByPrefix('climb idle', climb basic);
+                menushit.animation.addByPrefix('climb chose', climb selected);
+                menushit.animation.addByPrefix('credits idle', credits basic);
+                menushit.animation.addByPrefix('credits chose', credits selected);
+                menushit.animation.addByPrefix('freeplay idle', freeplay basic);
+                menushit.animation.addByPrefix('freeplay chose', freeplay selected);
+                menushit.animation.addByPrefix('options idle', options basic);
+                menushit.animation.addByPrefix('options chose', options selected);
+                menushit.animation.play('climb idle');
+                menushit.x = 100;
+                menushit.velocity.x -= 30;
+		menushit.scrollFactor.set(0, yScroll);
+		menushit.updateHitbox();
+		menushit.antialiasing = ClientPrefs.globalAntialiasing;
+		add(menushit);
+
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
@@ -94,7 +112,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
-			menuItem.screenCenter(X);
+			//menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			var scr:Float = (optionShit.length - 4) * 0.135;
 			if(optionShit.length < 6) scr = 0;
@@ -241,7 +259,7 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
-			spr.screenCenter(X);
+			
 		});
 	}
 
