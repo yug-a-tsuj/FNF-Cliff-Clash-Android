@@ -78,7 +78,7 @@ class MainMenuState extends MusicBeatState
                 menushit.animation.addByPrefix('options chose', options selected);
                 menushit.animation.play('climb idle');
                 menushit.x = 100;
-                menushit.velocity.x -= 30;
+                menushit.velocity.x = 30;
 		menushit.scrollFactor.set(0, yScroll);
 		menushit.updateHitbox();
 		menushit.antialiasing = ClientPrefs.globalAntialiasing;
