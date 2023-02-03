@@ -67,7 +67,7 @@ class MainMenuState extends MusicBeatState
 		add(bg);
 
                 var menushit:FlxSprite = new FlxSprite();
-                menushit.frames = Paths.getSparrowAtlas('mainmenu/FNF_main_menu_assets);
+                menushit.frames = Paths.getSparrowAtlas('mainmenu/FNF_main_menu_assets');
                 menushit.animation.addByPrefix('climb idle', climb basic);
                 menushit.animation.addByPrefix('climb chose', climb selected);
                 menushit.animation.addByPrefix('credits idle', credits basic);
