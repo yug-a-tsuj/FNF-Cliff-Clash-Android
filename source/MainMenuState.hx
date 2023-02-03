@@ -68,14 +68,14 @@ class MainMenuState extends MusicBeatState
 
                 var menushit:FlxSprite = new FlxSprite();
                 menushit.frames = Paths.getSparrowAtlas('mainmenu/FNF_main_menu_assets');
-                menushit.animation.addByPrefix('climb idle', climb basic);
-                menushit.animation.addByPrefix('climb chose', climb selected);
-                menushit.animation.addByPrefix('credits idle', credits basic);
-                menushit.animation.addByPrefix('credits chose', credits selected);
-                menushit.animation.addByPrefix('freeplay idle', freeplay basic);
-                menushit.animation.addByPrefix('freeplay chose', freeplay selected);
-                menushit.animation.addByPrefix('options idle', options basic);
-                menushit.animation.addByPrefix('options chose', options selected);
+                menushit.animation.addByPrefix('climb idle', "climb basic");
+                menushit.animation.addByPrefix('climb chose', "climb selected");
+                menushit.animation.addByPrefix('credits idle', "credits basic");
+                menushit.animation.addByPrefix('credits chose', "credits selected");
+                menushit.animation.addByPrefix('freeplay idle', "freeplay basic");
+                menushit.animation.addByPrefix('freeplay chose', "freeplay selected");
+                menushit.animation.addByPrefix('options idle', "options basic");
+                menushit.animation.addByPrefix('options chose', "options selected");
                 menushit.animation.play('climb idle');
                 menushit.x = 100;
                 menushit.velocity.x = 30;
