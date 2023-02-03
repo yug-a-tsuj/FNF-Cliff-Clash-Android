@@ -149,7 +149,7 @@ class TitleState extends MusicBeatState
 		#end
 	}
 
-        var bg:FlxSprite;
+        //var bg:FlxSprite;
 	var logoBl:FlxSprite;
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
@@ -191,25 +191,30 @@ class TitleState extends MusicBeatState
 		Conductor.changeBPM(102);
 		persistentUpdate = true;
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBG'));
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
-		bg.setGraphicSize(Std.int(bg.width * 0.6));
-                bg.screenCenter();
+		var bg:FlxSprite = new FlxSprite(-8, -7).loadGraphic(Paths.image('storymenu/snow'));
+		bg.scale.set(0.69, 0.69);
 		bg.updateHitbox();
+		bg.screenCenter();
+		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
-		logoBl = new FlxSprite();
+		mountain = new FlxSprite(453, 14).loadGraphic(Paths.image('storymenu/mountain'));
+		mountain.scale.set(0.38, 0.38);
+		mountain.updateHitbox();
+		mountain.antialiasing = FlxG.save.data.antialiasing;
+		add(mountain);
+
+		logoBl = new FlxSprite(-150, -100);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
-                /*bruh
-                logoBl.y -= 80.5;*/
+                logoBl.y += 50;
 		logoBl.updateHitbox();
-		logoBl.screenCenter(XY);
+		logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 
-		/*swagShader = new ColorSwap();
+		swagShader = new ColorSwap();
 		if(!FlxG.save.data.psykaEasterEgg || !easterEggEnabled) {
 			gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 			gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
@@ -224,7 +229,7 @@ class TitleState extends MusicBeatState
 			gfDance.animation.addByIndices('danceRight', 'psykaDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		}
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
-		add(gfDance);*/
+		//add(gfDance);
 		gfDance.shader = swagShader.shader;
 		add(logoBl);
 		//logoBl.shader = swagShader.shader;
