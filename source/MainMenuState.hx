@@ -30,9 +30,9 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
-	var optionShit:Array<String> = ['story_mode', 'freeplay', 'credits', 'options'];
+	var optionShit:Array<String> = ['climb', 'freeplay', 'credits', 'options'];
 
-        var menushit:FlxSprite;
+        var mountain:FlxSprite;
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
@@ -58,31 +58,22 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = persistentDraw = true;
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
-		bg.scrollFactor.set(0, yScroll);
-		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		var bg:FlxSprite = new FlxSprite(-8, -7).loadGraphic(Paths.image('storymenu/snow'));
+		bg.scale.set(0.69, 0.69);
 		bg.updateHitbox();
 		bg.screenCenter();
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
-                var menushit:FlxSprite = new FlxSprite();
-                menushit.frames = Paths.getSparrowAtlas('mainmenu/FNF_main_menu_assets');
-                menushit.animation.addByPrefix('climb idle', "climb basic");
-                menushit.animation.addByPrefix('climb chose', "climb selected");
-                menushit.animation.addByPrefix('credits idle', "credits basic");
-                menushit.animation.addByPrefix('credits chose', "credits selected");
-                menushit.animation.addByPrefix('freeplay idle', "freeplay basic");
-                menushit.animation.addByPrefix('freeplay chose', "freeplay selected");
-                menushit.animation.addByPrefix('options idle', "options basic");
-                menushit.animation.addByPrefix('options chose', "options selected");
-                menushit.animation.play('climb idle');
-                menushit.x = 100;
-                menushit.velocity.x = 30;
-		menushit.scrollFactor.set(0, yScroll);
-		menushit.updateHitbox();
-		menushit.antialiasing = ClientPrefs.globalAntialiasing;
-		add(menushit);
+		mountain = new FlxSprite(453, 14).loadGraphic(Paths.image('storymenu/mountain'));
+		mountain.scale.set(0.38, 0.38);
+		mountain.updateHitbox();
+		mountain.antialiasing = FlxG.save.data.antialiasing;
+		add(mountain);
+
+                menuItems = new FlxTypedGroup<FlxSprite>();
+		add(menuItems);
+		var tex = Paths.getSparrowAtlas('mainmenu/FNF_main_menu_assets');
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		camFollowPos = new FlxObject(0, 0, 1, 1);
@@ -106,20 +97,27 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
-			var menuItem:FlxSprite = new FlxSprite(0, (i * 140)  + offset);
-			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
+			var menuItem:FlxSprite = new FlxSprite(FlxG.width * 1.6, FlxG.height * 1.6);
+			menuItem.frames = tex;
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
-			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
+			menuItem.animation.addByPrefix('selected', optionShit[i] + " selected", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
+                        menuItem.x = -500;
+			menuItem.y = 60 + (i * 120);
 			//menuItem.screenCenter(X);
 			menuItems.add(menuItem);
-			var scr:Float = (optionShit.length - 4) * 0.135;
-			if(optionShit.length < 6) scr = 0;
-			menuItem.scrollFactor.set(0, scr);
-			menuItem.antialiasing = ClientPrefs.globalAntialiasing;
-			//menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
-			menuItem.updateHitbox();
+			menuItem.scrollFactor.set();
+			menuItem.antialiasing = FlxG.save.data.antialiasing;
+                        if (firstStart)
+				FlxTween.tween(menuItem,{x: 23},1 + (i * 0.25) ,{ease: FlxEase.expoInOut, onComplete: function(flxTween:FlxTween) 
+					{ 
+						finishedFunnyMove = true; 
+						changeItem();
+					}});
+			else
+				menuItem.x = 23;
+		
 		}
 
 		FlxG.camera.follow(camFollowPos, null, 1);
