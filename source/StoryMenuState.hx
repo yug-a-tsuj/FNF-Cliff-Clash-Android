@@ -363,4 +363,4 @@ class StoryMenuState extends MusicBeatState
 			stringThing.push(leWeek.songs[i][0]);
 		}
         }
-
+}
