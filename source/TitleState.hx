@@ -149,6 +149,7 @@ class TitleState extends MusicBeatState
 		#end
 	}
 
+        var mountain:FlxSprite;
         //var bg:FlxSprite;
 	var logoBl:FlxSprite;
 	var gfDance:FlxSprite;
