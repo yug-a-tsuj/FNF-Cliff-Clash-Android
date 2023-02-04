@@ -361,5 +361,5 @@ class StoryMenuState extends MusicBeatState
 		var stringThing:Array<String> = [];
 		for (i in 0...leWeek.songs.length) {
 			stringThing.push(leWeek.songs[i][0]);
-		}
-        }
+	}
+}
