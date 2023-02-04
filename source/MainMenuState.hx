@@ -98,12 +98,12 @@ class MainMenuState extends MusicBeatState
 
 		for (i in 0...optionShit.length)
 		{
-			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
 			var menuItem:FlxSprite = new FlxSprite(FlxG.width * 1.6, FlxG.height * 1.6);
 			menuItem.frames = tex;
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " selected", 24);
 			menuItem.animation.play('idle');
+                        menuItem.setGraphicSize(Std.int(menuItem.width * 0.7));
 			menuItem.ID = i;
                         menuItem.x = -500;
 			menuItem.y = 60 + (i * 120);
