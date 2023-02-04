@@ -31,6 +31,7 @@ class MainMenuState extends MusicBeatState
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
         public static var firstStart:Bool = true;
+        public static var finishedFunnyMove:Bool = false;
 	var optionShit:Array<String> = ['climb', 'freeplay', 'credits', 'options'];
 
         var mountain:FlxSprite;
