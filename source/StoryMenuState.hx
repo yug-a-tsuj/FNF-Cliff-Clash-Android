@@ -89,7 +89,10 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...WeekData.weeksList.length)
 		{
-			leftarrow = new FlxSprite(712 - 60, 37);
+                       WeekData.setDirectoryFromWeek(WeekData.weeksLoaded.get(WeekData.weeksList[i]));
+		}
+
+		leftarrow = new FlxSprite(712 - 60, 37);
 		//35
 		leftarrow.scale.set(0.35, 0.35);
 		leftarrow.updateHitbox();
