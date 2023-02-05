@@ -232,7 +232,10 @@ class MainMenuState extends MusicBeatState
 
 								switch (daChoice)
 								{
-									case 'story_mode':
+									case 'climb':
+										FlxTween.tween(mountain,{x: 453,y: 14, "scale.x": 1,"scale.y": 1 },2,{ease: FlxEase.expoOut, onComplete: function(flxTween:FlxTween)
+											{
+											}});
 										MusicBeatState.switchState(new StoryMenuState());
 									case 'freeplay':
 										MusicBeatState.switchState(new FreeplayState());
