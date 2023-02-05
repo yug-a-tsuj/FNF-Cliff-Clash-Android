@@ -36,8 +36,8 @@ class MainMenuState extends MusicBeatState
 
         var mountain:FlxSprite;
 	var magenta:FlxSprite;
-	var camFollow:FlxObject;
-	var camFollowPos:FlxObject;
+	/*var camFollow:FlxObject;
+	var camFollowPos:FlxObject;*/
 
 	override function create()
 	{
@@ -77,10 +77,10 @@ class MainMenuState extends MusicBeatState
 		add(menuItems);
 		var tex = Paths.getSparrowAtlas('mainmenu/FNF_main_menu_assets');
 
-		camFollow = new FlxObject(0, 0, 1, 1);
+		/*camFollow = new FlxObject(0, 0, 1, 1);
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
-		add(camFollowPos);
+		add(camFollowPos);*/
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
 		magenta.scrollFactor.set(0, yScroll);
