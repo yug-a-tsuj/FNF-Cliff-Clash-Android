@@ -16,6 +16,9 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.effects.FlxFlicker;
 import WeekData;
 
 using StringTools;
@@ -36,7 +39,6 @@ class StoryMenuState extends MusicBeatState
 	var bgSprite:FlxSprite;
 
 	private static var curWeek:Int = 0;
-
 	var weekordiff:Int = 0;
 	var chapterselect:FlxSprite;
 	var easy:FlxSprite;
@@ -52,12 +54,17 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-        #if MODS_ALLOWED
+		#if MODS_ALLOWED
 		Paths.destroyLoadedImages();
- 		#end	
+		#end
 		WeekData.reloadWeekFiles(true);
 		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
 		persistentUpdate = persistentDraw = true;
+
+		#if desktop
+		// Updating Discord Rich Presence
+		DiscordClient.changePresence("In the Menus", null);
+		#end
 
 		sky = new FlxSprite(-485, -357).loadGraphic(Paths.image('storymenu/snow'));
 		add(sky);
@@ -82,14 +89,9 @@ class StoryMenuState extends MusicBeatState
 		chapterselect.updateHitbox();
 		add(chapterselect);
 
-		#if desktop
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
-		#end
-
 		for (i in 0...WeekData.weeksList.length)
 		{
-                       WeekData.setDirectoryFromWeek(WeekData.weeksLoaded.get(WeekData.weeksList[i]));
+			WeekData.setDirectoryFromWeek(WeekData.weeksLoaded.get(WeekData.weeksList[i]));
 		}
 
 		leftarrow = new FlxSprite(712 - 60, 37);
@@ -123,11 +125,7 @@ class StoryMenuState extends MusicBeatState
 		trace("Line 165");
 
 		changeWeek();
-                changeDifficulty();
-
-		#if mobileC
-        addVirtualPad(FULL, A_B);
-        #end
+		changeDifficulty();
 
 		super.create();
 	}
@@ -141,14 +139,8 @@ class StoryMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		// scoreText.setFormat('VCR OSD Mono', 32);
-		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, CoolUtil.boundTo(elapsed * 30, 0, 1)));
-		if(Math.abs(intendedScore - lerpScore) < 10) lerpScore = intendedScore;
-
-		scoreText.text = "WEEK SCORE:" + lerpScore;
 
 		// FlxG.watch.addQuick('font', scoreText.font);
-
-		difficultySelectors.visible = !weekIsLocked(curWeek);
 
 		if (!movedBack && !selectedWeek)
 		{
@@ -205,11 +197,6 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-
-		grpLocks.forEach(function(lock:FlxSprite)
-		{
-			lock.y = grpWeekText.members[lock.ID].y;
-		});
 	}
 
 	var movedBack:Bool = false;
@@ -292,7 +279,8 @@ class StoryMenuState extends MusicBeatState
 				FlxTween.tween(hard,{y: 286},0.1,{ease: FlxEase.expoInOut, onComplete: function(flxTween:FlxTween){}});
 		}
 	}
-		function weekordifficulty(change:Int = 0):Void
+
+	function weekordifficulty(change:Int = 0):Void
 		{
 			weekordiff += change;
 	
@@ -311,7 +299,6 @@ class StoryMenuState extends MusicBeatState
 						rightarrow.y = 170;
 				}
 		}
-
 
 	function changeWeek(change:Int = 0):Void
 	{
@@ -348,6 +335,9 @@ class StoryMenuState extends MusicBeatState
 					skytween = FlxTween.tween(sky,{x: -485,y: 0},2,{ease: FlxEase.expoOut, onComplete: function(flxTween:FlxTween){}});
 				}
 
+
+	}
+
 	function weekIsLocked(weekNum:Int) {
 		var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[weekNum]);
 		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!weekCompleted.exists(leWeek.weekBefore) || !weekCompleted.get(leWeek.weekBefore)));
@@ -362,3 +352,5 @@ class StoryMenuState extends MusicBeatState
 		for (i in 0...leWeek.songs.length) {
 			stringThing.push(leWeek.songs[i][0]);
 		}
+	}
+}
