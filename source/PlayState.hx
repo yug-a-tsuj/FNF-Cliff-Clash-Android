@@ -657,7 +657,9 @@ class PlayState extends MusicBeatState
 					var bg:BGSprite = new BGSprite('weeb/animatedEvilSchool_low', posX, posY, 0.8, 0.9);
 					bg.scale.set(6, 6);
 					bg.antialiasing = false;
-					add(bg);
+				 add(bg);
+                              }
+
 					case 'celeste':
 				var scale = 1.3;
 				var posX = -286;
