@@ -112,6 +112,13 @@ class PlayState extends MusicBeatState
 	public var GF_X:Float = 400;
 	public var GF_Y:Float = 130;
 	
+	public var BFCAM_X:Float = 0;
+	public var BFCAM_Y:Float = 0;
+	public var DADCAM_X:Float = 0;
+	public var DADCAM_Y:Float = 0;
+	
+	private var floatshit:Float = 0;
+	
 	public static var songSpeed:Float = 0;
 	
 	public var boyfriendGroup:FlxSpriteGroup;
@@ -134,6 +141,7 @@ class PlayState extends MusicBeatState
 
 	public var notes:FlxTypedGroup<Note>;
 	public var unspawnNotes:Array<Note> = [];
+	private var psychicNotes:Array<Dynamic> = [];
 	public var eventNotes:Array<Dynamic> = [];
 
 	private var strumLine:FlxSprite;
@@ -199,6 +207,9 @@ class PlayState extends MusicBeatState
 	var trainSound:FlxSound;
 
 	var limoKillingState:Int = 0;
+	var frontspikes:FlxSprite;
+	var foreground:FlxSprite;
+	var darkScreen:FlxSprite;
 	var limo:BGSprite;
 	var limoMetalPole:BGSprite;
 	var limoLight:BGSprite;
@@ -225,6 +236,8 @@ class PlayState extends MusicBeatState
 	public var scoreTxt:FlxText;
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
+	
+	var goldenUnlocked:Bool = false;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -232,7 +245,7 @@ class PlayState extends MusicBeatState
 	public static var deathCounter:Int = 0;
 
 	public var defaultCamZoom:Float = 1.05;
-
+	
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
 
@@ -260,6 +273,9 @@ class PlayState extends MusicBeatState
 	// Lua shit
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 	public var introSoundsSuffix:String = '';
+	
+	//song unlocking thing
+	public var hideFreeplay:Bool;
 
 	override public function create()
 	{
@@ -355,6 +371,10 @@ class PlayState extends MusicBeatState
 
 		defaultCamZoom = stageData.defaultZoom;
 		isPixelStage = stageData.isPixelStage;
+		BFCAM_X = stageData.boyfriend_camera[0];
+		BFCAM_Y = stageData.boyfriend_camera[1];
+		DADCAM_X = stageData.opponent_camera[0];
+		DADCAM_Y = stageData.opponent_camera[1];
 		BF_X = stageData.boyfriend[0];
 		BF_Y = stageData.boyfriend[1];
 		GF_X = stageData.girlfriend[0];
@@ -638,6 +658,246 @@ class PlayState extends MusicBeatState
 					bg.scale.set(6, 6);
 					bg.antialiasing = false;
 					add(bg);
+					case 'celeste':
+				var scale = 1.3;
+				var posX = -286;
+				var posY = -165;
+
+
+				var sky:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage/celestesky', 'celeste'));
+				sky.setGraphicSize(Std.int(sky.width * scale));
+				sky.antialiasing = ClientPrefs.globalAntialiasing;
+				sky.scrollFactor.set(0.1, 0.1);
+				sky.active = false;
+				add(sky);
+
+				var bridge:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage/celestebridge', 'celeste'));
+				bridge.setGraphicSize(Std.int(bridge.width * 1));
+				bridge.antialiasing = ClientPrefs.globalAntialiasing;
+				bridge.scrollFactor.set(0.3, 0.3);
+				bridge.active = false;
+				add(bridge);
+
+				var city:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage/celestecity', 'celeste'));
+				city.setGraphicSize(Std.int(city.width * 1));
+				city.antialiasing = ClientPrefs.globalAntialiasing;
+				city.scrollFactor.set(0.35, 0.35);
+				city.active = false;
+				add(city);
+
+				var trees:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage/celestetrees', 'celeste'));
+				trees.setGraphicSize(Std.int(trees.width * scale));
+				trees.antialiasing = ClientPrefs.globalAntialiasing;
+				trees.scrollFactor.set(0.85, 0.9);
+				trees.active = false;
+				add(trees);
+
+				var floorback:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage/celestefloorback', 'celeste'));
+				floorback.setGraphicSize(Std.int(floorback.width * scale));
+				floorback.antialiasing = ClientPrefs.globalAntialiasing;
+				floorback.scrollFactor.set(0.85, 0.9);
+				floorback.active = false;
+				add(floorback);
+
+				var floor:FlxSprite = new FlxSprite(posX + 20, posY).loadGraphic(Paths.image('stage/celestefloor', 'celeste'));
+				floor.setGraphicSize(Std.int(floor.width * scale));
+				floor.antialiasing = ClientPrefs.globalAntialiasing;
+				floor.scrollFactor.set(0.9, 0.9);
+				floor.active = false;
+				add(floor);
+
+				var grave:FlxSprite = new FlxSprite(posX - 10, posY).loadGraphic(Paths.image('stage/celestegrave', 'celeste'));
+				grave.setGraphicSize(Std.int(floor.width * scale));
+				grave.antialiasing = ClientPrefs.globalAntialiasing;
+				grave.scrollFactor.set(1, 1);
+				grave.active = false;
+				add(grave);
+			
+			case 'celeste_dream':
+				var scale = 1.3;
+				var posX = -286;
+				var posY = -165;
+
+
+				var sky:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stagedream/dreamsky', 'celeste'));
+				sky.setGraphicSize(Std.int(sky.width * scale));
+				sky.antialiasing = ClientPrefs.globalAntialiasing;
+				sky.scrollFactor.set(0.1, 0.1);
+				sky.active = false;
+				add(sky);
+
+				var stars:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stagedream/dreamstars', 'celeste'));
+				stars.setGraphicSize(Std.int(stars.width * scale));
+				stars.antialiasing = ClientPrefs.globalAntialiasing;
+				stars.scrollFactor.set(0.1, 0.1);
+				stars.active = false;
+				add(stars);
+
+				var bridge:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stagedream/dreambridge', 'celeste'));
+				bridge.setGraphicSize(Std.int(bridge.width * 1));
+				bridge.antialiasing = ClientPrefs.globalAntialiasing;
+				bridge.scrollFactor.set(0.3, 0.3);
+				bridge.active = false;
+				add(bridge);
+
+				var city:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stagedream/dreamcity', 'celeste'));
+				city.setGraphicSize(Std.int(city.width * 1));
+				city.antialiasing = ClientPrefs.globalAntialiasing;
+				city.scrollFactor.set(0.35, 0.35);
+				city.active = false;
+				add(city);
+
+				var trees:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stagedream/dreamtrees', 'celeste'));
+				trees.setGraphicSize(Std.int(trees.width * scale));
+				trees.antialiasing = ClientPrefs.globalAntialiasing;
+				trees.scrollFactor.set(0.85, 0.9);
+				trees.active = false;
+				add(trees);
+
+				var floor:FlxSprite = new FlxSprite(posX + 20, posY).loadGraphic(Paths.image('stagedream/dreamfloor', 'celeste'));
+				floor.setGraphicSize(Std.int(floor.width * scale));
+				floor.antialiasing = ClientPrefs.globalAntialiasing;
+				floor.scrollFactor.set(0.9, 0.9);
+				floor.active = false;
+				add(floor);
+
+				var grave:FlxSprite = new FlxSprite(posX - 10, posY).loadGraphic(Paths.image('stagedream/dreamgrave', 'celeste'));
+				grave.setGraphicSize(Std.int(floor.width * scale));
+				grave.antialiasing = ClientPrefs.globalAntialiasing;
+				grave.scrollFactor.set(1, 1);
+				grave.active = false;
+				add(grave);
+			
+			case 'forsaken':
+				var scale = 1.3;
+				var posX = -286;
+				var posY = -165;
+				var sky:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage2/reflectionsky', 'celeste'));
+				sky.setGraphicSize(Std.int(sky.width * scale));
+				sky.antialiasing = ClientPrefs.globalAntialiasing;
+				sky.scrollFactor.set(0.1, 0.1);
+				sky.active = false;
+				add(sky);
+
+				var stars:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage2/reflectionstars', 'celeste'));
+				stars.setGraphicSize(Std.int(sky.width * scale));
+				stars.antialiasing = ClientPrefs.globalAntialiasing;
+				stars.scrollFactor.set(0.1, 0.1);
+				stars.active = false;
+				add(stars);
+
+				var inside:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage2/reflectioninside', 'celeste'));
+				inside.setGraphicSize(Std.int(inside.width * scale));
+				inside.antialiasing = ClientPrefs.globalAntialiasing;
+				inside.scrollFactor.set(0.85, 0.9);
+				inside.active = false;
+				add(inside);
+
+				var ground:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage2/reflectionground', 'celeste'));
+				ground.setGraphicSize(Std.int(ground.width * scale));
+				ground.antialiasing = ClientPrefs.globalAntialiasing;
+				ground.scrollFactor.set(0.9, 0.9);
+				ground.active = false;
+				add(ground);
+
+				add(gfGroup);
+
+				add(dadGroup);
+
+				add(boyfriendGroup);
+
+				foreground = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage2/reflectionforeground', 'celeste'));
+				foreground.setGraphicSize(Std.int(foreground.width * scale));
+				foreground.antialiasing = ClientPrefs.globalAntialiasing;
+				foreground.scrollFactor.set(1, 1);
+				foreground.active = false;
+
+				darkScreen = new FlxSprite(-FlxG.width * FlxG.camera.zoom, -FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+				darkScreen.scrollFactor.set();
+				darkScreen.visible = false;
+
+			case 'reflection':
+				var scale = 1.3;
+				var posX = -286;
+				var posY = -165;
+				var sky:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage3/forsakensky', 'celeste'));
+				sky.setGraphicSize(Std.int(sky.width * scale));
+				sky.antialiasing = ClientPrefs.globalAntialiasing;
+				sky.scrollFactor.set(0.1, 0.1);
+				sky.active = false;
+				add(sky);
+
+				var bridge:FlxSprite = new FlxSprite(posX, posY - 50).loadGraphic(Paths.image('stage3/forsakenbridge', 'celeste'));
+				bridge.setGraphicSize(Std.int(bridge.width * scale));
+				bridge.antialiasing = ClientPrefs.globalAntialiasing;
+				bridge.scrollFactor.set(0.3, 0.3);
+				bridge.active = false;
+				add(bridge);
+
+				var mountains:FlxSprite = new FlxSprite(posX, posY - 50).loadGraphic(Paths.image('stage3/forsakenmountains', 'celeste'));
+				mountains.setGraphicSize(Std.int(mountains.width * scale));
+				mountains.antialiasing = ClientPrefs.globalAntialiasing;
+				mountains.scrollFactor.set(0.3, 0.3);
+				mountains.active = false;
+				add(mountains);
+
+				var ground:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage3/forsakenfloor', 'celeste'));
+				ground.setGraphicSize(Std.int(ground.width * scale));
+				ground.antialiasing = ClientPrefs.globalAntialiasing;
+				ground.scrollFactor.set(1.0, 1.0);
+				ground.active = false;
+				add(ground);
+
+				var grave:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage3/forsakengravestone', 'celeste'));
+				grave.setGraphicSize(Std.int(grave.width * scale));
+				grave.antialiasing = ClientPrefs.globalAntialiasing;
+				grave.scrollFactor.set(0.85, 0.9);
+				grave.active = false;
+				add(grave);
+			case 'golden':
+				var scale = 1.3;
+				var posX = -286;
+				var posY = -165;
+				var sky:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage4/GOLDENsky', 'celeste'));
+				sky.setGraphicSize(Std.int(sky.width * scale));
+				sky.antialiasing = ClientPrefs.globalAntialiasing;
+				sky.scrollFactor.set(0.1, 0.1);
+				sky.active = false;
+				add(sky);
+
+				var moss:FlxSprite = new FlxSprite(posX, posY - 50).loadGraphic(Paths.image('stage4/GOLDENmossidk', 'celeste'));
+				moss.setGraphicSize(Std.int(moss.width * scale));
+				moss.antialiasing = ClientPrefs.globalAntialiasing;
+				moss.scrollFactor.set(0.5, 0.5);
+				moss.active = false;
+				add(moss);
+
+				var backspike:FlxSprite = new FlxSprite(posX, posY - 50).loadGraphic(Paths.image('stage4/GOLDENbackspikes', 'celeste'));
+				backspike.setGraphicSize(Std.int(backspike.width * scale));
+				backspike.antialiasing = ClientPrefs.globalAntialiasing;
+				backspike.scrollFactor.set(0.7, 0.7);
+				backspike.active = false;
+				add(backspike);
+
+				var pillars:FlxSprite = new FlxSprite(posX, posY - 50).loadGraphic(Paths.image('stage4/GOLDENpillars', 'celeste'));
+				pillars.setGraphicSize(Std.int(pillars.width * scale));
+				pillars.antialiasing = ClientPrefs.globalAntialiasing;
+				pillars.scrollFactor.set(0.7, 0.7);
+				pillars.active = false;
+				add(pillars);
+
+				var ground:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage4/GOLDENground', 'celeste'));
+				ground.setGraphicSize(Std.int(ground.width * scale));
+				ground.antialiasing = ClientPrefs.globalAntialiasing;
+				ground.scrollFactor.set(0.9, 0.9);
+				ground.active = false;
+				add(ground);
+
+				frontspikes = new FlxSprite(posX, posY).loadGraphic(Paths.image('stage4/GOLDENforegroundspikes', 'celeste'));
+				frontspikes.setGraphicSize(Std.int(frontspikes.width * scale));
+				frontspikes.antialiasing = ClientPrefs.globalAntialiasing;
+				frontspikes.scrollFactor.set(.9, .9);
+				frontspikes.active = false;
 				}
 		}
 
@@ -650,6 +910,11 @@ class PlayState extends MusicBeatState
 		// Shitty layering but whatev it works LOL
 		if (curStage == 'limo')
 			add(limo);
+			if (curStage == 'golden')
+			add(frontspikes);
+		if (curStage == 'forsaken')
+			add(foreground);
+			add(darkScreen);
 
 		add(dadGroup);
 		add(boyfriendGroup);
@@ -1044,6 +1309,21 @@ add(creditTxt);
 				case 'senpai' | 'roses' | 'thorns':
 					if(daSong == 'roses') FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
+					
+					case 'strawberry' | 'forsaken' | 'golden':
+					FlxG.camera.zoom = 0.8;
+					FlxTween.tween(FlxG.camera, { zoom: defaultCamZoom }, 1.1, { startDelay: 0.5, ease: FlxEase.quadInOut });
+					new FlxTimer().start(0.7, function(tmr:FlxTimer) {
+						startCountdown();
+					});
+
+				case 'reflection':
+					FlxG.camera.zoom = 0.65;
+					FlxTween.tween(FlxG.camera, { zoom: defaultCamZoom }, 1.0, { startDelay: 0.5, ease: FlxEase.quadInOut });
+					new FlxTimer().start(0.7, function(tmr:FlxTimer) {
+						startCountdown();
+					});
+					
 				default:
 					startCountdown();
 			}
@@ -1362,7 +1642,14 @@ add(creditTxt);
 				switch (swagCounter)
 				{
 					case 0:
-						FlxG.sound.play(Paths.sound('intro3' + introSoundsSuffix), 0.6);
+						if (curSong.toLowerCase() == 'golden')
+							{
+								FlxG.sound.play(Paths.sound('intro3' + introSoundsSuffix), 0);
+							}
+							else
+							{
+								FlxG.sound.play(Paths.sound('intro3' + introSoundsSuffix), 0.6);
+							}
 					case 1:
 						var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
 						ready.scrollFactor.set();
@@ -1384,7 +1671,20 @@ add(creditTxt);
 								ready.destroy();
 							}
 						});
-						FlxG.sound.play(Paths.sound('intro2' + introSoundsSuffix), 0.6);
+
+						if (curSong.toLowerCase() == 'golden')
+							{
+							ready.visible = false;
+							}
+
+						if (curSong.toLowerCase() == 'golden')
+							{
+								FlxG.sound.play(Paths.sound('intro2' + introSoundsSuffix), 0);
+							}
+							else
+							{
+								FlxG.sound.play(Paths.sound('intro2' + introSoundsSuffix), 0.6);
+							}
 					case 2:
 						var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 						set.scrollFactor.set();
@@ -1405,7 +1705,19 @@ add(creditTxt);
 								set.destroy();
 							}
 						});
-						FlxG.sound.play(Paths.sound('intro1' + introSoundsSuffix), 0.6);
+						if (curSong.toLowerCase() == 'golden')
+							{
+							set.visible = false;
+							}
+
+						if (curSong.toLowerCase() == 'golden')
+							{
+								FlxG.sound.play(Paths.sound('intro1' + introSoundsSuffix), 0);
+							}
+							else
+							{
+								FlxG.sound.play(Paths.sound('intro1' + introSoundsSuffix), 0.6);
+							}
 					case 3:
 						var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 						go.scrollFactor.set();
@@ -1428,7 +1740,20 @@ add(creditTxt);
 								go.destroy();
 							}
 						});
-						FlxG.sound.play(Paths.sound('introGo' + introSoundsSuffix), 0.6);
+						
+						if (curSong.toLowerCase() == 'golden')
+							{
+							go.visible = false;
+							}
+
+						if (curSong.toLowerCase() == 'golden')
+							{
+								FlxG.sound.play(Paths.sound('introGo' + introSoundsSuffix), 0);
+							}
+							else
+							{
+								FlxG.sound.play(Paths.sound('introGo' + introSoundsSuffix), 0.6);
+							}
 					case 4:
 				}
 
@@ -1708,6 +2033,30 @@ add(creditTxt);
 			babyArrow.postAddedToGroup();
 		}
 	}
+	
+private function generatePsychicArrows(id:Int):Void
+		{
+			var anim:String = '';
+			switch(id % 4) {
+				case 0: anim = 'arrowglowLEFT';
+				case 1: anim = 'arrowglowDOWN';
+				case 2: anim = 'arrowglowUP';
+				case 3: anim = 'arrowglowRIGHT';
+			}
+			var babyArrow:AttachedSprite = new AttachedSprite('MIRRORANIM_assets', anim);
+			babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
+			babyArrow.scrollFactor.set();
+			babyArrow.updateHitbox();
+			babyArrow.visible = false;
+			babyArrow.xAdd = -28;
+			babyArrow.yAdd = -29;
+	
+			var spr:FlxSprite = playerStrums.members[id];
+			babyArrow.x = spr.x;
+			babyArrow.y = spr.y;
+			babyArrow.sprTracker = spr;
+			strumLinePsychicNotes.add(babyArrow);
+		}
 
 	override function openSubState(SubState:FlxSubState)
 	{
@@ -1857,6 +2206,12 @@ add(creditTxt);
 		}*/
 
 		callOnLuas('onUpdate', [elapsed]);
+		
+		floatshit += 0.03;
+		if (dad.curCharacter == "badeline" || dad.curCharacter == "badeline-alt")
+			{
+            dad.y += Math.sin(floatshit);
+       		}
 
 		switch (curStage)
 		{
