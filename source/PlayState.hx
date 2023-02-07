@@ -658,7 +658,7 @@ class PlayState extends MusicBeatState
 					bg.scale.set(6, 6);
 					bg.antialiasing = false;
 				 add(bg);
-                              }
+                             }
 
 					case 'celeste':
 				var scale = 1.3;
